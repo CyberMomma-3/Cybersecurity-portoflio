@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Response Plan — Bright Smile Family Dentistry</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --steel: #2E5FA3;
+    --accent: #C8D8F0;
+    --light-blue: #EBF2FF;
+    --red: #C0392B;
+    --red-light: #FADBD8;
+    --orange: #D35400;
+    --orange-light: #FDEBD0;
+    --yellow: #B7950B;
+    --yellow-light: #FEF9E7;
+    --green: #1E8449;
+    --green-light: #EAFAF1;
+    --gray-50: #F8F9FA;
+    --gray-100: #F1F3F5;
+    --gray-200: #E9ECEF;
+    --gray-300: #DEE2E6;
+    --gray-500: #ADB5BD;
+    --gray-700: #495057;
+    --text: #1A1A2E;
+    --text-muted: #5A6270;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: var(--gray-50); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+  /* COVER */
+  .cover { background: var(--navy); color: white; padding: 80px 60px 60px; position: relative; overflow: hidden; min-height: 320px; }
+  .cover::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: rgba(46,95,163,0.3); }
+  .cover::after { content: ''; position: absolute; bottom: -60px; left: 40%; width: 300px; height: 300px; border-radius: 50%; background: rgba(46,95,163,0.15); }
+  .cover-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+  .cover-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .cover h1 { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; color: white; }
+  .cover-org { font-size: 18px; color: var(--accent); font-weight: 300; margin-bottom: 32px; }
+  .cover-meta { display: flex; flex-wrap: wrap; gap: 24px; border-top: 1px solid rgba(200,216,240,0.3); padding-top: 24px; }
+  .cover-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .cover-meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); opacity: 0.7; }
+  .cover-meta-value { font-size: 13px; color: white; font-weight: 500; }
+
+  /* LAYOUT */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px 60px; }
+
+  /* TOC */
+  .toc { background: white; border: 1px solid var(--gray-200); border-left: 4px solid var(--steel); padding: 28px 32px; margin: 32px 0; border-radius: 0 8px 8px 0; }
+  .toc h2 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--steel); margin-bottom: 14px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 6px; }
+  .toc a { color: var(--steel); text-decoration: none; font-size: 13px; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 48px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--steel); }
+  .section-num { background: var(--steel); color: white; width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .section-header h2 { font-size: 18px; font-weight: 700; color: var(--navy); }
+  h3 { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--steel); margin: 24px 0 10px; }
+  p { margin-bottom: 12px; color: var(--text); font-size: 13px; }
+
+  /* PHASE BLOCKS */
+  .phase {
+    border-radius: 10px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .phase-header {
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .phase-prep    .phase-header { background: #1B2A4A; }
+  .phase-id      .phase-header { background: #1A5276; }
+  .phase-contain .phase-header { background: #C0392B; }
+  .phase-erad    .phase-header { background: #D35400; }
+  .phase-recover .phase-header { background: #1E8449; }
+  .phase-lessons .phase-header { background: #2E5FA3; }
+
+  .phase-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px;
+    flex-shrink: 0;
+  }
+  .phase-title { color: white; font-size: 16px; font-weight: 700; }
+  .phase-subtitle { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 1px; }
+  .phase-body { background: white; padding: 20px 22px; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 13px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--gray-300);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-owner {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    padding-left: 12px;
+    font-style: italic;
+  }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin-bottom: 20px; border-radius: 8px; border: 1px solid var(--gray-200); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: var(--navy); color: white; }
+  thead th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.5px; white-space: nowrap; }
+  tbody tr:nth-child(even) { background: var(--light-blue); }
+  tbody tr:nth-child(odd) { background: white; }
+  tbody tr:hover { background: var(--accent); }
+  tbody td { padding: 9px 14px; border-bottom: 1px solid var(--gray-200); vertical-align: middle; font-size: 13px; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
+  .badge-critical { background: var(--red-light); color: var(--red); }
+  .badge-high     { background: var(--orange-light); color: var(--orange); }
+  .badge-medium   { background: var(--yellow-light); color: var(--yellow); }
+  .badge-low      { background: var(--green-light); color: var(--green); }
+
+  /* ALERT BOXES */
+  .alert { padding: 14px 18px; border-radius: 6px; margin-bottom: 14px; border-left: 4px solid; font-size: 13px; }
+  .alert-red    { background: var(--red-light); border-color: var(--red); }
+  .alert-orange { background: var(--orange-light); border-color: var(--orange); }
+  .alert-blue   { background: var(--light-blue); border-color: var(--steel); }
+  .alert-green  { background: var(--green-light); border-color: var(--green); }
+  .alert b { display: block; margin-bottom: 4px; color: var(--navy); }
+
+  /* CONTACT CARD */
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .contact-card { background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 14px 16px; }
+  .contact-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--steel); margin-bottom: 4px; }
+  .contact-name { font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 2px; }
+  .contact-detail { font-size: 12px; color: var(--text-muted); }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; margin-bottom: 20px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--gray-200); }
+  .timeline-item { position: relative; margin-bottom: 16px; }
+  .timeline-dot { position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--steel); border: 2px solid white; box-shadow: 0 0 0 2px var(--steel); }
+  .timeline-time { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--steel); margin-bottom: 2px; }
+  .timeline-action { font-size: 13px; color: var(--text); }
+
+  /* INFO BOX */
+  .infobox { background: var(--light-blue); border: 1px solid var(--steel); border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-size: 13px; color: var(--navy); }
+  .infobox strong { color: var(--steel); }
+
+  /* LISTS */
+  ul.styled { padding-left: 20px; margin-bottom: 12px; }
+  ul.styled li { margin-bottom: 6px; font-size: 13px; }
+
+  /* FOOTER */
+  .doc-footer { background: var(--navy); color: var(--accent); text-align: center; padding: 24px; font-size: 12px; margin-top: 40px; }
+  .doc-footer strong { color: white; }
+
+  @media print {
+    body { background: white; font-size: 11px; }
+    .cover { padding: 40px; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-content">
+    <div class="cover-label">GRC Portfolio Project</div>
+    <h1>Incident Response Plan</h1>
+    <div class="cover-org">Bright Smile Family Dentistry — Mock Organization</div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Document Date</span>
+        <span class="cover-meta-value">May 2026</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Prepared By</span>
+        <span class="cover-meta-value">Melissa Gaither, CompTIA Security+</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Version</span>
+        <span class="cover-meta-value">1.0</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Classification</span>
+        <span class="cover-meta-value">Confidential</span>
+      </div>
+      <div class="cover-meta-item">
+        <span class="cover-meta-label">Framework</span>
+        <span class="cover-meta-value">NIST SP 800-61 &amp; HIPAA Security Rule</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#s1">Purpose and Scope</a></li>
+      <li><a href="#s2">Incident Response Team</a></li>
+      <li><a href="#s3">Incident Classification</a></li>
+      <li><a href="#s4">Phase 1 — Preparation</a></li>
+      <li><a href="#s5">Phase 2 — Identification</a></li>
+      <li><a href="#s6">Phase 3 — Containment</a></li>
+      <li><a href="#s7">Phase 4 — Eradication</a></li>
+      <li><a href="#s8">Phase 5 — Recovery</a></li>
+      <li><a href="#s9">Phase 6 — Lessons Learned</a></li>
+      <li><a href="#s10">Ransomware Scenario Walkthrough</a></li>
+      <li><a href="#s11">HIPAA Notification Requirements</a></li>
+      <li><a href="#s12">Document Review and Maintenance</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. PURPOSE -->
+  <div class="section" id="s1">
+    <div class="section-header"><div class="section-num">1</div><h2>Purpose and Scope</h2></div>
+    <p>This Incident Response Plan (IRP) establishes procedures for detecting, responding to, and recovering from cybersecurity incidents affecting electronic Protected Health Information (ePHI) at <strong>Bright Smile Family Dentistry</strong>. It is designed to minimize damage, reduce recovery time, and ensure compliance with the HIPAA Security Rule (45 CFR § 164.308(a)(6)).</p>
+    <p>This plan applies to all staff, systems, and business associates that create, receive, maintain, or transmit ePHI, including clinical workstations, practice management software, digital imaging systems, email platforms, and backup systems.</p>
+    <div class="alert alert-blue">
+      <b>Regulatory Basis</b>
+      The HIPAA Security Rule requires covered entities to implement policies and procedures to address security incidents, including identifying and responding to suspected or known incidents, mitigating harmful effects, and documenting incidents and outcomes (§164.308(a)(6)(ii)).
+    </div>
+  </div>
+
+  <!-- 2. IRT -->
+  <div class="section" id="s2">
+    <div class="section-header"><div class="section-num">2</div><h2>Incident Response Team</h2></div>
+    <p>The following roles make up the Incident Response Team (IRT). All members must be familiar with this plan and participate in annual training and tabletop exercises.</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-role">Incident Response Lead</div>
+        <div class="contact-name">Office Manager</div>
+        <div class="contact-detail">Overall coordination and decision-making</div>
+        <div class="contact-detail">Phone: [Office Manager Phone]</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-role">Security Officer</div>
+        <div class="contact-name">Designated Staff Member</div>
+        <div class="contact-detail">HIPAA compliance and documentation</div>
+        <div class="contact-detail">Phone: [Security Officer Phone]</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-role">IT Support (MSP)</div>
+        <div class="contact-name">Managed Service Provider</div>
+        <div class="contact-detail">Technical response and remediation</div>
+        <div class="contact-detail">Emergency Line: [MSP Emergency #]</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-role">Practice Owner</div>
+        <div class="contact-name">Lead Dentist / Owner</div>
+        <div class="contact-detail">Final authority on major decisions</div>
+        <div class="contact-detail">Phone: [Owner Phone]</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-role">Legal Counsel</div>
+        <div class="contact-name">Practice Attorney</div>
+        <div class="contact-detail">Legal guidance on breach notification</div>
+        <div class="contact-detail">Phone: [Attorney Phone]</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-role">HHS / OCR Contact</div>
+        <div class="contact-name">HHS Office for Civil Rights</div>
+        <div class="contact-detail">Breach reporting portal</div>
+        <div class="contact-detail">ocrportal.hhs.gov</div>
+      </div>
+    </div>
+
+    <h3>Chain of Command</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Step 1 — Any Staff Member</div>
+        <div class="timeline-action">Detects or suspects an incident → immediately reports to Office Manager. Do not attempt to investigate or fix it independently.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Step 2 — Office Manager</div>
+        <div class="timeline-action">Receives report → contacts IT MSP emergency line and notifies Security Officer. Begins incident log.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Step 3 — IT MSP</div>
+        <div class="timeline-action">Assesses technical scope → advises on containment steps → begins remediation.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Step 4 — Security Officer</div>
+        <div class="timeline-action">Determines if ePHI was involved → initiates HIPAA breach assessment → coordinates notification if required.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Step 5 — Practice Owner / Legal</div>
+        <div class="timeline-action">Notified for major incidents → approves patient notification decisions → authorizes media or HHS reporting if required.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CLASSIFICATION -->
+  <div class="section" id="s3">
+    <div class="section-header"><div class="section-num">3</div><h2>Incident Classification</h2></div>
+    <p>Not every security event is a full-blown incident. The following classification helps the team respond proportionally.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Level</th><th>Description</th><th>Examples</th><th>Response</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-low">Low</span></td><td>Minimal impact, no ePHI involved</td><td>Spam email, failed login attempt</td><td>Log and monitor</td></tr>
+        <tr><td><span class="badge badge-medium">Medium</span></td><td>Potential ePHI exposure, limited scope</td><td>Lost unencrypted USB drive, phishing click with no data confirmed stolen</td><td>Activate IRT, investigate within 24 hrs</td></tr>
+        <tr><td><span class="badge badge-high">High</span></td><td>Confirmed ePHI exposure or system compromise</td><td>Confirmed phishing breach, unauthorized access by former employee</td><td>Full IRT activation, begin HIPAA assessment</td></tr>
+        <tr><td><span class="badge badge-critical">Critical</span></td><td>Major system compromise or mass ePHI breach</td><td>Ransomware attack, large-scale data theft</td><td>Full IRT + Legal + possible law enforcement</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- 4. PREPARATION -->
+  <div class="section" id="s4">
+    <div class="section-header"><div class="section-num">4</div><h2>The Six Phases of Incident Response</h2></div>
+
+    <div class="phase phase-prep">
+      <div class="phase-header">
+        <div class="phase-num">1</div>
+        <div>
+          <div class="phase-title">Preparation</div>
+          <div class="phase-subtitle">Everything that must be in place before an incident occurs</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>Preparation is the most important phase. A practice that is well-prepared responds faster, recovers faster, and faces less regulatory exposure when an incident occurs.</p>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>This Incident Response Plan is documented, approved, and accessible to all IRT members</span><span class="check-owner">Security Officer</span></li>
+          <li><div class="check-box"></div><span>All IRT members have been trained on this plan and know their roles</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Annual tabletop exercise conducted to simulate an incident scenario</span><span class="check-owner">Security Officer</span></li>
+          <li><div class="check-box"></div><span>All staff have completed HIPAA security awareness training including phishing recognition</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Clean, tested data backups exist and are stored securely offsite or in the cloud</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>All staff have individual login credentials (no shared accounts)</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>All laptops and workstations have full-disk encryption enabled</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Antivirus and endpoint protection software is installed and up to date on all devices</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>All software patches are applied on a regular schedule</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Business Associate Agreements are in place with all vendors who handle ePHI</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>IRT contact list is printed and posted in the office (not only stored digitally)</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Incident log template is ready and accessible</span><span class="check-owner">Security Officer</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5. IDENTIFICATION -->
+    <div class="phase phase-id" id="s5">
+      <div class="phase-header">
+        <div class="phase-num">2</div>
+        <div>
+          <div class="phase-title">Identification</div>
+          <div class="phase-subtitle">Recognizing that an incident has occurred or is occurring</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>Identification begins the moment something suspicious is noticed. Speed matters — the faster an incident is identified and reported, the less damage it causes.</p>
+        <h3>Common Warning Signs in a Dental Office</h3>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>Computers are unresponsive, unusually slow, or programs will not open</span></li>
+          <li><div class="check-box"></div><span>A pop-up appears demanding payment to unlock files (ransomware)</span></li>
+          <li><div class="check-box"></div><span>Staff receive emails asking them to click a link or enter their password</span></li>
+          <li><div class="check-box"></div><span>A patient calls to report a suspicious email that appears to be from the office</span></li>
+          <li><div class="check-box"></div><span>A staff member's login is showing activity while they are not at their workstation</span></li>
+          <li><div class="check-box"></div><span>The insurance clearinghouse reports unusual activity on the practice's account</span></li>
+          <li><div class="check-box"></div><span>Files are missing, renamed, or cannot be opened</span></li>
+          <li><div class="check-box"></div><span>Antivirus software generates an alert or shuts down unexpectedly</span></li>
+        </ul>
+        <h3>Identification Checklist</h3>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>Staff member reports suspicious activity to Office Manager immediately — do not attempt to investigate independently</span><span class="check-owner">All Staff</span></li>
+          <li><div class="check-box"></div><span>Office Manager opens incident log and records: date, time, who reported it, and what was observed</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Office Manager contacts IT MSP to assess whether a real incident has occurred</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>IT MSP confirms incident and classifies severity (Low / Medium / High / Critical)</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Security Officer notified if ePHI may be involved</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Practice Owner notified for High or Critical incidents</span><span class="check-owner">Office Manager</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 6. CONTAINMENT -->
+    <div class="phase phase-contain" id="s6">
+      <div class="phase-header">
+        <div class="phase-num">3</div>
+        <div>
+          <div class="phase-title">Containment</div>
+          <div class="phase-subtitle">Stop the incident from spreading — act fast</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="alert alert-red">
+          <b>⚠️ Critical Rule: Do Not Touch the Affected System</b>
+          The first instinct is to click around and try to fix it. This almost always makes things worse. Leave the affected computer exactly as it is and follow the steps below.
+        </div>
+        <h3>Immediate Containment (First 15 Minutes)</h3>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>Do not click anything on the affected computer — leave it exactly as found</span><span class="check-owner">All Staff</span></li>
+          <li><div class="check-box"></div><span>Do not turn off the affected computer unless directed by IT MSP (turning it off may destroy evidence)</span><span class="check-owner">All Staff</span></li>
+          <li><div class="check-box"></div><span>Disconnect the affected computer from the network — unplug the ethernet cable and/or disable WiFi</span><span class="check-owner">Office Manager / IT MSP</span></li>
+          <li><div class="check-box"></div><span>Shut down or disconnect other workstations from the network to prevent spread</span><span class="check-owner">Office Manager / IT MSP</span></li>
+          <li><div class="check-box"></div><span>Do not log into any systems using potentially compromised credentials</span><span class="check-owner">All Staff</span></li>
+          <li><div class="check-box"></div><span>Contact IT MSP emergency line immediately</span><span class="check-owner">Office Manager</span></li>
+        </ul>
+        <h3>Short-Term Containment (First Few Hours)</h3>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>IT MSP assesses full scope of compromise across all systems</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Isolate any additional affected systems identified during assessment</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Change passwords for all staff accounts from an unaffected device</span><span class="check-owner">IT MSP + Office Manager</span></li>
+          <li><div class="check-box"></div><span>Determine whether ePHI was accessed or exfiltrated</span><span class="check-owner">IT MSP + Security Officer</span></li>
+          <li><div class="check-box"></div><span>Preserve all logs and evidence — do not delete anything</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Consider whether to continue operating on paper records temporarily</span><span class="check-owner">Office Manager + Practice Owner</span></li>
+          <li><div class="check-box"></div><span>Notify legal counsel if ePHI breach is confirmed or suspected</span><span class="check-owner">Practice Owner</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 7. ERADICATION -->
+    <div class="phase phase-erad" id="s7">
+      <div class="phase-header">
+        <div class="phase-num">4</div>
+        <div>
+          <div class="phase-title">Eradication</div>
+          <div class="phase-subtitle">Find the cause and remove it completely</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>Eradication ensures the threat is fully removed before any systems are brought back online. Rushing this phase risks reinfection.</p>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>IT MSP performs full forensic scan of all affected systems to identify malware, backdoors, or unauthorized access points</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Identify the root cause — how did the attacker get in? (phishing link, unpatched software, weak password, etc.)</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Remove all malware, ransomware, or malicious files from affected systems</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Reimage (wipe and rebuild) any systems that cannot be fully cleaned</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Apply all outstanding software patches and security updates</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Remove or disable any unauthorized user accounts created during the incident</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Verify all systems are clean before proceeding to Recovery</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Document all findings and actions taken during eradication</span><span class="check-owner">Security Officer</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 8. RECOVERY -->
+    <div class="phase phase-recover" id="s8">
+      <div class="phase-header">
+        <div class="phase-num">5</div>
+        <div>
+          <div class="phase-title">Recovery</div>
+          <div class="phase-subtitle">Restore systems and return to normal operations safely</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>Recovery is not just about turning computers back on — it requires careful validation to ensure everything is working correctly and securely before patients are seen.</p>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>Restore patient data and records from the most recent clean backup</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Reinstall all practice software — Dentrix, Eaglesoft, imaging software, and billing platforms</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Calibrate digital X-ray sensors and imaging equipment after system restoration</span><span class="check-owner">Lead Dentist / Clinical Staff</span></li>
+          <li><div class="check-box"></div><span>Test all systems thoroughly before returning to patient care</span><span class="check-owner">IT MSP + Office Manager</span></li>
+          <li><div class="check-box"></div><span>Verify patient data integrity — confirm records are complete and accurate</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Reset all staff passwords and enforce new strong password requirements</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Re-enable multi-factor authentication on all accounts if applicable</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Monitor all systems closely for 30 days post-recovery for signs of reinfection</span><span class="check-owner">IT MSP</span></li>
+          <li><div class="check-box"></div><span>Communicate with staff about the return to normal operations and any changes to procedures</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Document the date and time systems were restored and declared clean</span><span class="check-owner">Security Officer</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 9. LESSONS LEARNED -->
+    <div class="phase phase-lessons" id="s9">
+      <div class="phase-header">
+        <div class="phase-num">6</div>
+        <div>
+          <div class="phase-title">Lessons Learned</div>
+          <div class="phase-subtitle">Document, train, and update — prevent it from happening again</div>
+        </div>
+      </div>
+      <div class="phase-body">
+        <p>The Lessons Learned phase should occur within 2 weeks of the incident being resolved. Skipping this phase means the practice is likely to experience the same incident again.</p>
+        <ul class="checklist">
+          <li><div class="check-box"></div><span>Hold a formal after-action meeting with all IRT members within 14 days of resolution</span><span class="check-owner">Security Officer</span></li>
+          <li><div class="check-box"></div><span>Review the full incident log and timeline as a team</span><span class="check-owner">All IRT</span></li>
+          <li><div class="check-box"></div><span>Answer: What happened? How did it start? How was it detected?</span><span class="check-owner">All IRT</span></li>
+          <li><div class="check-box"></div><span>Answer: What did we do well? What could have been faster or better?</span><span class="check-owner">All IRT</span></li>
+          <li><div class="check-box"></div><span>Identify the root cause and confirm it has been fully addressed</span><span class="check-owner">IT MSP + Security Officer</span></li>
+          <li><div class="check-box"></div><span>Update this Incident Response Plan based on lessons learned</span><span class="check-owner">Security Officer</span></li>
+          <li><div class="check-box"></div><span>Conduct targeted staff training based on how the incident occurred (e.g., phishing awareness if a phishing email was clicked)</span><span class="check-owner">Office Manager</span></li>
+          <li><div class="check-box"></div><span>Implement any new technical or administrative controls identified during the review</span><span class="check-owner">IT MSP + Office Manager</span></li>
+          <li><div class="check-box"></div><span>Produce a written after-action report and file with incident documentation</span><span class="check-owner">Security Officer</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. RANSOMWARE WALKTHROUGH -->
+  <div class="section" id="s10">
+    <div class="section-header"><div class="section-num">10</div><h2>Ransomware Scenario Walkthrough</h2></div>
+    <p>The following is a step-by-step walkthrough of how this IRP applies to a ransomware attack — the most critical cybersecurity threat facing dental and healthcare practices today.</p>
+
+    <div class="alert alert-red">
+      <b>Scenario: Monday Morning Ransomware Attack</b>
+      A front desk staff member arrives and turns on their workstation. A full-screen pop-up appears stating all files are encrypted and demanding $50,000 in Bitcoin to restore access. The Dentrix software will not open.
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Immediate — 0 to 15 Minutes</div>
+        <div class="timeline-action"><strong>Do not touch or click anything on the affected computer.</strong> Staff member immediately notifies Office Manager. Office Manager calls IT MSP emergency line. Other staff are told not to log into any computers.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">15 to 60 Minutes — Containment</div>
+        <div class="timeline-action">IT MSP advises disconnecting all workstations from the network. Office Manager disconnects ethernet cables and disables WiFi on all machines. Practice moves to paper records for the day. Security Officer notified and begins incident log.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Hour 1 to 4 — Assessment</div>
+        <div class="timeline-action">IT MSP arrives onsite or connects remotely to an unaffected device. Determines scope — which systems are encrypted, whether data was exfiltrated, and how the ransomware entered (likely a phishing email or unpatched vulnerability). Practice Owner and Legal Counsel notified.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Day 1 to 3 — Eradication</div>
+        <div class="timeline-action">IT MSP wipes and reimages all affected systems. Removes ransomware and any backdoors. Applies all security patches. Changes all staff passwords. Verifies network is clean before restoration begins.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Day 3 to 5 — Recovery</div>
+        <div class="timeline-action">Patient data restored from clean backups. Software reinstalled and tested. X-ray sensors and imaging systems calibrated. Practice returns to normal operations. Systems monitored closely.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Within 60 Days — HIPAA Notification</div>
+        <div class="timeline-action">If ePHI was confirmed accessed or exfiltrated, affected patients notified in writing. HHS OCR notified via ocrportal.hhs.gov. If 500+ patients affected in Ohio, local media notified. All notification documentation filed.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">Within 14 Days of Resolution — Lessons Learned</div>
+        <div class="timeline-action">After-action meeting held. IRP updated. Staff retrained on phishing awareness. New controls implemented to prevent recurrence. Written after-action report filed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. HIPAA NOTIFICATIONS -->
+  <div class="section" id="s11">
+    <div class="section-header"><div class="section-num">11</div><h2>HIPAA Notification Requirements</h2></div>
+    <p>When a breach of ePHI is confirmed, HIPAA's Breach Notification Rule (45 CFR §§ 164.400–414) requires the following notifications:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Who to Notify</th><th>Deadline</th><th>Method</th><th>Trigger</th></tr></thead>
+      <tbody>
+        <tr><td>Affected Patients</td><td>Within 60 days of discovery</td><td>Written notice by first-class mail</td><td>Any confirmed ePHI breach</td></tr>
+        <tr><td>HHS Office for Civil Rights</td><td>Within 60 days (500+) or annually (under 500)</td><td>ocrportal.hhs.gov</td><td>Any confirmed ePHI breach</td></tr>
+        <tr><td>Prominent Local Media</td><td>Within 60 days of discovery</td><td>Press release or media notification</td><td>500+ patients in a single state affected</td></tr>
+        <tr><td>Business Associates</td><td>Without unreasonable delay</td><td>Direct notification per BAA terms</td><td>If BA caused or discovered the breach</td></tr>
+      </tbody>
+    </table></div>
+    <div class="alert alert-orange">
+      <b>Important: Ransom Payment Does NOT Eliminate Notification Requirement</b>
+      Paying a ransom and receiving a decryption key does not mean ePHI was not accessed. HIPAA requires notification unless the practice can demonstrate through a forensic investigation that the data was not actually accessed or exfiltrated. When in doubt, notify.
+    </div>
+  </div>
+
+  <!-- 12. REVIEW -->
+  <div class="section" id="s12">
+    <div class="section-header"><div class="section-num">12</div><h2>Document Review and Maintenance</h2></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Activity</th><th>Frequency</th><th>Owner</th></tr></thead>
+      <tbody>
+        <tr><td>Full IRP review and update</td><td>Annual</td><td>Security Officer</td></tr>
+        <tr><td>Tabletop exercise / simulation</td><td>Annual</td><td>Security Officer + All IRT</td></tr>
+        <tr><td>Staff security awareness training</td><td>Annual</td><td>Office Manager</td></tr>
+        <tr><td>IRT contact list verification</td><td>Semi-Annual</td><td>Office Manager</td></tr>
+        <tr><td>Backup restoration test</td><td>Quarterly</td><td>IT MSP</td></tr>
+        <tr><td>Review after any real incident</td><td>Within 14 days of incident</td><td>Security Officer</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="infobox">
+      <strong>Portfolio Note:</strong> This is a mock Incident Response Plan created as a cybersecurity career portfolio project. Bright Smile Family Dentistry is a fictional organization. All procedures are based on real HIPAA Security Rule requirements and NIST SP 800-61 (Computer Security Incident Handling Guide) methodology.
+    </div>
+
+    <h3>References</h3>
+    <ul class="styled">
+      <li>NIST SP 800-61 Rev 2 — Computer Security Incident Handling Guide. https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final</li>
+      <li>HHS Office for Civil Rights — Breach Notification Rule. https://www.hhs.gov/hipaa/for-professionals/breach-notification/index.html</li>
+      <li>HHS OCR — Ransomware and HIPAA Guidance. https://www.hhs.gov/hipaa/for-professionals/security/guidance/ransomware/index.html</li>
+      <li>CompTIA Security+ Study Guide, Exam SY0-701</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  Prepared by: <strong>Melissa Gaither</strong> &nbsp;|&nbsp; CompTIA Security+ &nbsp;|&nbsp; GitHub: CyberMomma-3<br>
+  <span style="opacity:0.7;">This document is part of a cybersecurity career transition portfolio.</span>
+</div>
+
+</body>
+</html>
